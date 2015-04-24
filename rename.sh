@@ -17,9 +17,9 @@ find . -type f -name \*.JPG -exec ./rename.sh {} +
 
 find . -name "*.exr" -exec /home/user/rename.sh {} +
 
-the format below is a serch string in the file name, followed by the string to replace it with
+the format below is a serch string in the file name(foo), followed by the string to replace it with(bar)
 '
 
 for f; do
-    mv -v "$f" "${f//201_022_010_/201_022_010_test_}"
+    mv -v "$f" "${f//foo_001.jpg/bar_001.jpg}"
 done
