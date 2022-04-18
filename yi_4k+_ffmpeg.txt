@@ -1,0 +1,35 @@
+ffmpeg yi 4k+ cycling vid processing
+
+To rotate 180 degrees
+
+ffmpeg -i in.mp4 -vf "transpose=2,transpose=2" out.mp4
+
+transpose docs:
+
+https://www.ffmpeg.org/ffmpeg-filters.html#transpose-1
+
+
+To stabilize your video:
+
+The easy way: one pass using deshake filter
+
+ffmpeg -i shaky-input.mp4 -vf deshake stabilized-output.mp4
+
+The deshake filter has also some optional settings:
+
+https://www.ffmpeg.org/ffmpeg-filters.html#deshake
+
+
+The better way: two passes using vidstab filters
+
+For better results you can try the two-step process using ffmpeg's vidstabdetect and vidstabtransform filters:
+
+ffmpeg -i shaky-input.mp4 -vf vidstabdetect=shakiness=5:show=1 dummy.mp4
+
+This will output a transforms.trf that will be read by the second pass:
+
+ffmpeg -i shaky-input.mp4 -vf vidstabtransform,unsharp=5:5:0.8:3:3:0.4 stabilized-output.mp4
+
+The vidstab filters documentation explains all the configuration options:
+
+https://www.ffmpeg.org/ffmpeg-filters.html#vidstabdetect-1
